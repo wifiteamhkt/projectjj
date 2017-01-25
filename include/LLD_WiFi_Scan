@@ -1,0 +1,23 @@
+# Developed by Keith Cheng, Yeung Yeung Date: 2016 Nov 11
+#
+# This config file is used for wifi scanning. Result will included ESSID, BSSID, Signal(RSSI), Channel
+# 
+# ************************* item key = wifi.discovery *************************
+#
+# exemple: {"data":[{"{#ESSID}":"vbot", "{#BSSID}":"2c:5d:93:xx:xx;xx"]}
+#
+# ************************************************************************************* ************ Make sure include=/etc/"agent root dir"/wifi was modified 
+# ************** *************************************************************************************
+#
+UserParameter=wifi.discovery,cat /tmp/scan_result_signal |awk -F ' ' 'BEGIN{printf "{\"data\":["};{printf c"{\"{#BSSID}\":\""$1"\"}";c=","};END{print "]}"}'
+#
+# iw link states (you need {#IF} as parameter, default 'wlan0') Get the connected info
+#
+#
+UserParameter=wifi.scan.signal[*],cat /tmp/scan_result_signal |grep -i $1 |awk '{print $$2}' |sed 's/-//g'
+UserParameter=wifi.scan.essid[*],cat /tmp/scan_result_iwlist | grep -i $1 |awk -F '"' '{print $$2}'
+UserParameter=wifi.scan.protocol[*],cat /tmp/scan_result_iwlist | grep -i $1 |awk '{print $$3}'
+UserParameter=wifi.scan.channel[*],cat /tmp/scan_result_iwlist | grep -i $1 |awk '{print $$4}'
+UserParameter=wifi.scan.rate[*],cat /tmp/scan_result_iwlist | grep -i $1 |awk '{print $$5}'
+UserParameter=wifi.scan.quality[*],cat /tmp/scan_result_iwlist |grep -i $1 | awk '{print $$6}' |awk -F '/' '{print $$1}'
+UserParameter=wifi.scan.signal_lvl[*],cat /tmp/scan_result_iwlist |grep -i $1 |awk '{print $$7}' |awk -F '/' '{print $$1}'

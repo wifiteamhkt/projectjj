@@ -1,0 +1,9 @@
+#Get the Wifi Authenication Start time in ms
+#UserParameter=auth.start,cat /var/log/syslog |grep "start auth" |tail -n 1 |awk '{print $6}' |sed 's/\[//g; s/\]//g'
+
+#Get the Wifi Authenication Success time in ms
+#UserParameter=auth.success,cat /var/log/syslog |grep "auth success" |tail -n 1 |awk '{print $6}' |sed 's/\[//g; s/\]//g'
+
+#New script to get "Auth start time" and "Auth Success time". And the Auth token time = "Auth Success time" - "Auth start time"
+UserParameter=auth.token.time,sudo bash /etc/zabbix/script/auth_token_time.sh
+UserParameter=assoc.token.time,sudo bash /etc/zabbix/script/assoc_token_time.sh

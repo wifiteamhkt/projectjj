@@ -1,0 +1,21 @@
+# Developed by Keith Cheng, Yeung Yeung Date: 2016 Nov 11
+#
+#  
+# ************************* item key = default.ping *************************
+#
+# Search Default Gateway IP address and perform ping test
+#
+# ************************************************************************************* ************ Make sure include=/etc/"agent root dir"/wifi was modified 
+# ************** *************************************************************************************
+#
+
+#UserParameter=default.ping,sudo bash /etc/zabbix/script/default_ping.sh
+#Moved to "Perform_Test"
+
+
+UserParameter=wifi.link.bssid,iw wlan0 link |grep Connected |awk '{print $3}'
+UserParameter=wifi.link.essid,iw wlan0 link |grep SSID |awk '{print $2}'
+UserParameter=wifi.link.freq,iw wlan0 link |grep freq |awk '{print $2}'
+UserParameter=wifi.link.signal,iw wlan0 link |grep signal |awk '{print $2}' |sed 's/-//g'
+UserParameter=wifi.link.tx_bitrate,iw wlan0 link |grep bitrate |awk '{print $3}'
+UserParameter=wifi.link.ip,ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F ':' '{print $2}'

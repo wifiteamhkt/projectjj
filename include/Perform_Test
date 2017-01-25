@@ -1,0 +1,4 @@
+UserParameter=default.ping,sudo bash /etc/zabbix/script/default_ping.sh
+
+UserParameter=dns.perf[*],dig +time=$1 $2 |grep "Query time" |awk '{print $$4}'
+UserParameter=net.ping[*],sudo ping -c1 $1 |grep avg |awk '{print $$4}' |awk -F "/" '{print $$2}'
